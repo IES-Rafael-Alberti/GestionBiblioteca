@@ -1,90 +1,49 @@
 package org.pebiblioteca
 
-import RegistroPrestamos
-import java.time.LocalDateTime
-
 /**
- * Clase que gestiona la biblioteca, incluyendo la administración del catálogo de libros y el registro de préstamos.
+ * Clase que gestiona la biblioteca, incluyendo la administración del catálogo de elementos y el registro de préstamos.
+ *
+ * @property gestorPrestamos Instancia del gestor de préstamos a utilizar.
  */
 
-class GestorBiblioteca {
-    private val catalogo = mutableListOf<Libro>()
-    private val registroPrestamos = RegistroPrestamos()
+class GestorBiblioteca(private val gestorPrestamos: IGestorPrestamos) {
+    val catalogo = mutableListOf<ElementoBiblioteca>()
 
     /**
-     * Agrega un libro al catálogo de la biblioteca.
+     * Agrega un elemento al catálogo de la biblioteca.
      *
-     * @param titulo Título del libro.
-     * @param autor Autor del libro.
-     * @param añoPublicacion Año de publicación del libro.
-     * @param tematica Temática del libro.
+     * @param elemento Elemento a agregar.
      */
 
-    fun agregarLibro(titulo: String, autor: String, añoPublicacion: Int, tematica: String) {
-        val id = UtilidadesBiblioteca.generarIdentificadorUnico()
-        val libro = Libro(id, titulo, autor, añoPublicacion, tematica)
-        catalogo.add(libro)
+    fun agregarElemento(elemento: ElementoBiblioteca) {
+        catalogo.add(elemento)
     }
 
     /**
-     * Realiza un préstamo de un libro a un usuario.
+     * Realiza un préstamo de un elemento a un usuario.
      *
-     * @param libro El libro a prestar.
-     * @param usuario El usuario que realizará el préstamo.
+     * @param elemento Elemento a prestar.
+     * @param usuario Usuario que realiza el préstamo.
      */
 
-    fun realizarPrestamo(libro: Libro, usuario: Usuario) {
-        if (libro.obtenerEstado() == "disponible") {
-            libro.cambiarEstado("prestado")
-            registroPrestamos.registrarPrestamo(libro, usuario)
-            usuario.agregarLibroPrestado(libro)
+    fun prestarElemento(elemento: Prestable, usuario: Usuario) {
+        if (elemento.estado == "disponible") {
+            elemento.prestar()
+            gestorPrestamos.registrarPrestamo(elemento as ElementoBiblioteca, usuario)
         }
     }
 
     /**
-     * Realiza la devolución de un libro prestado por un usuario.
+     * Devuelve un elemento prestado por un usuario.
      *
-     * @param libro El libro a devolver.
-     * @param usuario El usuario que realizará la devolución.
+     * @param elemento Elemento a devolver.
+     * @param usuario Usuario que devuelve el elemento.
      */
 
-    fun realizarDevolucion(libro: Libro, usuario: Usuario) {
-        if (libro.obtenerEstado() == "prestado" && usuario.consultarLibrosPrestados().contains(libro)) {
-            libro.cambiarEstado("disponible")
-            registroPrestamos.devolverLibro(libro, usuario)
-            usuario.quitarLibroPrestado(libro)
+    fun devolverElemento(elemento: Prestable, usuario: Usuario) {
+        if (elemento.estado == "prestado") {
+            elemento.devolver()
+            gestorPrestamos.registrarDevolucion(elemento as ElementoBiblioteca, usuario)
         }
-    }
-
-    /**
-     * Consulta el historial de préstamos de un libro específico.
-     *
-     * @param libro El libro del cual se quiere consultar el historial de préstamos.
-     * @return El historial de préstamos del libro.
-     */
-
-    fun consultarHistorialPrestamosLibro(libro: Libro): List<Triple<Libro, Usuario, LocalDateTime>> {
-        return registroPrestamos.consultarHistorialPrestamosLibro(libro)
-    }
-
-    /**
-     * Consulta el historial de préstamos de un usuario específico.
-     *
-     * @param usuario El usuario del cual se quiere consultar el historial de préstamos.
-     * @return El historial de préstamos del usuario.
-     */
-
-    fun consultarHistorialPrestamosUsuario(usuario: Usuario): List<Triple<Libro, Usuario, LocalDateTime>> {
-        return registroPrestamos.consultarHistorialPrestamosUsuario(usuario)
-    }
-
-    /**
-     * Consulta el catálogo de libros de la biblioteca.
-     *
-     * @return El catálogo de libros.
-     */
-
-    fun consultarCatalogo(): List<Libro> {
-        return catalogo.toList()
     }
 }

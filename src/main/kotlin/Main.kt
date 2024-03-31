@@ -1,36 +1,35 @@
-import org.pebiblioteca.Libro
-import org.pebiblioteca.GestorBiblioteca
-import org.pebiblioteca.Usuario
+package org.pebiblioteca
 
 fun main() {
-    val gestor = GestorBiblioteca()
+    val registroPrestamos = RegistroPrestamos()
 
-    // Se crean los usuarios
+    val gestorBiblioteca = GestorBiblioteca(registroPrestamos)
+
+    // Creación de elementos de biblioteca (en este caso, libros)
+    val libro1 = Libro("1", "El Señor de los Anillos", "JRR Tolkien", 1954, "Fantasía")
+    val libro2 = Libro("2", "El Resplandor", "Stephen King", 1977, "Terror")
+    val libro3 = Libro("3", "Cosmos", "Carl Sagan", 1980, "Ciencia")
+
+    // Agregar los libros al catálogo de la biblioteca
+    gestorBiblioteca.agregarElemento(libro1)
+    gestorBiblioteca.agregarElemento(libro2)
+    gestorBiblioteca.agregarElemento(libro3)
+
     val usuario1 = Usuario(1, "Usuario1")
     val usuario2 = Usuario(2, "Usuario2")
 
-    // Se agregan los libros a la biblioteca
-    gestor.agregarLibro("El Señor de los Anillos", "JRR Tolkien", 1954, "Fantasía")
-    gestor.agregarLibro("El Resplandor", "Stephen King", 1977, "Terror")
-    gestor.agregarLibro("Cosmos", "Carl Sagan", 1980, "Ciencia")
+    // Realizar operaciones de préstamo y devolución
+    gestorBiblioteca.prestarElemento(libro1, usuario1)
+    gestorBiblioteca.prestarElemento(libro2, usuario2)
 
-    // Consulta del catálogo
-    val librosCatalogo = gestor.consultarCatalogo()
-    println("Catálogo de libros:")
-    librosCatalogo.forEach { println("${it.titulo}, ${it.autor}, ${it.añoPublicacion}, ${it.tematica}, ${it.obtenerEstado()}") }
+    gestorBiblioteca.devolverElemento(libro1, usuario1)
 
-    // Préstamos
-    gestor.realizarPrestamo(librosCatalogo[0], usuario1)
-    gestor.realizarPrestamo(librosCatalogo[1], usuario2)
-
-    // Libros prestados por un usuario en específico
-    println("\nLibros prestados por ${usuario1.nombre}:")
-    usuario1.consultarLibrosPrestados().forEach { println("${it.titulo}") }
-
-    // Historial de préstamos de un usuario en específico
-    println("\nHistorial de préstamos para ${librosCatalogo[0].titulo}:")
-    val historialLibro1 = gestor.consultarHistorialPrestamosLibro(librosCatalogo[0])
-    historialLibro1.forEach { println("${it.second.nombre} - ${it.third}") }
+    // Mostrar historial de préstamos
+    val historialPrestamos = registroPrestamos.consultarHistorialPrestamos()
+    println("Historial de préstamos:")
+    historialPrestamos.forEach { (elemento, usuario) ->
+        println("Elemento: ${elemento.titulo}, Usuario: ${usuario.nombre}")
+    }
 }
 
 

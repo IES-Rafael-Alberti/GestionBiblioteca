@@ -7,45 +7,20 @@ package org.pebiblioteca
  * @property autor Autor del libro.
  * @property añoPublicacion Año de publicación del libro.
  * @property tematica Temática del libro.
- * @property estado Estado actual del libro (disponible o prestado).
  */
 
-class Libro(
-    val id: String,
-    val titulo: String,
-    val autor: String,
-    val añoPublicacion: Int,
-    val tematica: String,
-    var estado: String = "disponible"
-){
+class Libro(id: String, titulo: String, var autor: String, var añoPublicacion: Int, var tematica: String) :
+    ElementoBiblioteca(id, titulo), Prestable {
 
-    /**
-     * Obtiene el identificador único del libro.
-     *
-     * @return El identificador único del libro.
-     */
-
-    fun obtenerId(): String {
-        return id
+    override fun prestar() {
+        if (estado == "disponible") {
+            estado = "prestado"
+        }
     }
 
-    /**
-     * Obtiene el estado actual del libro.
-     *
-     * @return El estado actual del libro.
-     */
-
-    fun obtenerEstado(): String {
-        return estado
-    }
-
-    /**
-     * Cambia el estado del libro.
-     *
-     * @param nuevoEstado El nuevo estado del libro.
-     */
-
-    fun cambiarEstado(nuevoEstado: String) {
-        estado = nuevoEstado
+    override fun devolver() {
+        if (estado == "prestado") {
+            estado = "disponible"
+        }
     }
 }
