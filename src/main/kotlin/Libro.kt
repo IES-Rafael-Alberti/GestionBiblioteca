@@ -19,13 +19,31 @@ class Libro(
     var estado: String = "disponible"
 ){
 
+    /**
+     * Obtiene el identificador único del libro.
+     *
+     * @return El identificador único del libro.
+     */
+
     fun obtenerId(): String {
         return id
     }
 
+    /**
+     * Obtiene el estado actual del libro.
+     *
+     * @return El estado actual del libro.
+     */
+
     fun obtenerEstado(): String {
         return estado
     }
+
+    /**
+     * Cambia el estado del libro.
+     *
+     * @param nuevoEstado El nuevo estado del libro.
+     */
 
     fun cambiarEstado(nuevoEstado: String) {
         estado = nuevoEstado
