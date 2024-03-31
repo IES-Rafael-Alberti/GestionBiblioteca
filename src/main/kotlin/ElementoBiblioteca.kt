@@ -12,5 +12,8 @@ package org.pebiblioteca
 abstract class ElementoBiblioteca(
     val id: String,
     val titulo: String,
+    var autor: String,
+    var añoPublicacion: Int,
+    var tematica: String,
     var estado: String = "disponible"
 )

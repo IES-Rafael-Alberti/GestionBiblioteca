@@ -9,8 +9,8 @@ package org.pebiblioteca
  * @property tematica Temática del libro.
  */
 
-class Libro(id: String, titulo: String, var autor: String, var añoPublicacion: Int, var tematica: String) :
-    ElementoBiblioteca(id, titulo), Prestable {
+class Libro(id: String, titulo: String, autor: String, añoPublicacion: Int, tematica: String) :
+    ElementoBiblioteca(id, titulo, autor, añoPublicacion, tematica), Prestable {
 
     override fun prestar() {
         if (estado == "disponible") {

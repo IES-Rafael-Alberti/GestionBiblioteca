@@ -1,31 +1,16 @@
 package org.pebiblioteca
 
+import java.time.LocalDateTime
+
 /**
  * Clase que gestiona la biblioteca, incluyendo la administración del catálogo de elementos y el registro de préstamos.
- *
- * @property gestorPrestamos Instancia del gestor de préstamos a utilizar.
+ * Se inyecta una instancia de Catalogo para cumplir con el principio de inversión de dependencias.
  */
-
-class GestorBiblioteca(private val gestorPrestamos: IGestorPrestamos) {
-    val catalogo = mutableListOf<ElementoBiblioteca>()
+class GestorBiblioteca(private val catalogo: Catalogo, private val gestorPrestamos: IGestorPrestamos) {
 
     /**
-     * Agrega un elemento al catálogo de la biblioteca.
-     *
-     * @param elemento Elemento a agregar.
+     * Realiza el préstamo de un elemento de la biblioteca a un usuario.
      */
-
-    fun agregarElemento(elemento: ElementoBiblioteca) {
-        catalogo.add(elemento)
-    }
-
-    /**
-     * Realiza un préstamo de un elemento a un usuario.
-     *
-     * @param elemento Elemento a prestar.
-     * @param usuario Usuario que realiza el préstamo.
-     */
-
     fun prestarElemento(elemento: Prestable, usuario: Usuario) {
         if (elemento.estado == "disponible") {
             elemento.prestar()
@@ -34,12 +19,8 @@ class GestorBiblioteca(private val gestorPrestamos: IGestorPrestamos) {
     }
 
     /**
-     * Devuelve un elemento prestado por un usuario.
-     *
-     * @param elemento Elemento a devolver.
-     * @param usuario Usuario que devuelve el elemento.
+     * Devuelve un elemento de la biblioteca prestado por un usuario.
      */
-
     fun devolverElemento(elemento: Prestable, usuario: Usuario) {
         if (elemento.estado == "prestado") {
             elemento.devolver()
