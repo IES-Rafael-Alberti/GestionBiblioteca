@@ -11,7 +11,7 @@ package org.pebiblioteca
  */
 
 class Libro(
-    val id: Int,
+    val id: String,
     val titulo: String,
     val autor: String,
     val añoPublicacion: Int,

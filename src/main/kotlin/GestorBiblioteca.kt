@@ -13,7 +13,9 @@ class GestorBiblioteca {
      * @param libro El libro a agregar al catálogo.
      */
 
-    fun agregarLibro(libro: Libro) {
+    fun agregarLibro(titulo: String, autor: String, añoPublicacion: Int, tematica: String) {
+        val id = UtilidadesBiblioteca.generarIdentificadorUnico()
+        val libro = Libro(id, titulo, autor, añoPublicacion, tematica)
         catalogo.add(libro)
     }
 
@@ -22,7 +24,7 @@ class GestorBiblioteca {
      * @param id Identificador del libro a eliminar.
      */
 
-    fun eliminarLibro(id: Int) {
+    fun eliminarLibro(id: String) {
         val libro = catalogo.find { it.id == id }
         if (libro != null) {
             catalogo.remove(libro)
@@ -37,7 +39,7 @@ class GestorBiblioteca {
      * @param usuario Nombre del usuario que realiza el préstamo.
      */
 
-    fun registrarPrestamo(idLibro: Int, usuario: String) {
+    fun registrarPrestamo(idLibro: String, usuario: String) {
         val libro = catalogo.find { it.id == idLibro }
         if (libro != null) {
             if (libro.estado == "disponible") {
@@ -57,7 +59,7 @@ class GestorBiblioteca {
      * @param idLibro Identificador del libro a devolver.
      */
 
-    fun devolverLibro(idLibro: Int) {
+    fun devolverLibro(idLibro: String) {
         val libro = catalogo.find { it.id == idLibro }
         if (libro != null) {
             if (libro.estado == "prestado") {
@@ -81,7 +83,7 @@ class GestorBiblioteca {
      * @param idLibro Identificador del libro a consultar.
      */
 
-    fun consultarDisponibilidad(idLibro: Int) {
+    fun consultarDisponibilidad(idLibro: String) {
         val libro = catalogo.find { it.id == idLibro }
         if (libro != null) {
             println("El libro con ID $idLibro está ${libro.estado}.")
