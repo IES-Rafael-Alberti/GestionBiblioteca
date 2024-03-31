@@ -17,4 +17,17 @@ class Libro(
     val añoPublicacion: Int,
     val tematica: String,
     var estado: String = "disponible"
-)
+){
+
+    fun obtenerId(): String {
+        return id
+    }
+
+    fun obtenerEstado(): String {
+        return estado
+    }
+
+    fun cambiarEstado(nuevoEstado: String) {
+        estado = nuevoEstado
+    }
+}
