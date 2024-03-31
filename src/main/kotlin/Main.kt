@@ -6,9 +6,9 @@ package org.pebiblioteca
 
 fun main() {
     // Crear instancias de elementos de biblioteca
-    val libro = Libro("1", "El señor de los anillos", "J.R.R. Tolkien", 1954, "Fantasía")
-    val revista = Revista("2", "National Geographic", 2021, "Ciencia")
-    val dvd = DVD("3", "Interestelar", 169, "Ciencia ficción")
+    val libro = Libro("L001", "El señor de los anillos", "J.R.R. Tolkien", 1954, "Fantasía")
+    val revista = Revista("R002", "National Geographic", 2021, "Ciencia")
+    val dvd = DVD("D003", "Interestelar", 169, "Ciencia ficción")
 
     // Crear el catálogo y agregar elementos
     val catalogo = Catalogo<ElementoBiblioteca>()
