@@ -1,19 +1,16 @@
 package org.pebiblioteca
 
+
 /**
- * Clase que representa un libro en la biblioteca.
- * @property id Identificador único del libro.
- * @property titulo Título del libro.
- * @property autor Autor del libro.
- * @property añoPublicacion Año de publicación del libro.
- * @property tematica Temática del libro.
+ * Clase que representa una revista en la biblioteca.
+ * @property edicion Número de edición de la revista.
+ * @property tematica Temática de la revista.
  */
-class Libro(
+class Revista(
     id: String,
     titulo: String,
-    var autor: String,
-    var añoPublicacion: Int,
-    var tematica: String
+    val edicion: Int,
+    val tematica: String
 ) : ElementoBiblioteca(id, titulo), Prestable {
     override var estado: String = "disponible"
 

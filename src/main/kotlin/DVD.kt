@@ -1,19 +1,16 @@
 package org.pebiblioteca
 
+
 /**
- * Clase que representa un libro en la biblioteca.
- * @property id Identificador único del libro.
- * @property titulo Título del libro.
- * @property autor Autor del libro.
- * @property añoPublicacion Año de publicación del libro.
- * @property tematica Temática del libro.
+ * Clase que representa un DVD en la biblioteca.
+ * @property duracion Duración en minutos del contenido del DVD.
+ * @property genero Género del contenido del DVD.
  */
-class Libro(
+class DVD(
     id: String,
     titulo: String,
-    var autor: String,
-    var añoPublicacion: Int,
-    var tematica: String
+    val duracion: Int,
+    val genero: String
 ) : ElementoBiblioteca(id, titulo), Prestable {
     override var estado: String = "disponible"
 

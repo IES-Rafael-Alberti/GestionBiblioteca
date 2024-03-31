@@ -6,7 +6,6 @@ package org.pebiblioteca
  */
 
 interface Prestable {
-    var estado: String
 
     /**
      * Método para marcar el elemento como prestado.
@@ -17,6 +16,5 @@ interface Prestable {
     /**
      * Método para marcar el elemento como disponible nuevamente.
      */
-
     fun devolver()
 }

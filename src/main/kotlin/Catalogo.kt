@@ -1,38 +1,47 @@
 package org.pebiblioteca
 
 /**
- * Clase que gestiona el catálogo de elementos de la biblioteca.
+ * Clase que representa el catálogo de la biblioteca.
+ * @param T Tipo de elementos en el catálogo.
  */
-class Catalogo {
-    private val gestorElementos = GestorElementos<ElementoBiblioteca>()
+class Catalogo<T : ElementoBiblioteca> {
+    private val elementos = mutableListOf<T>()
 
     /**
-     * Agrega un elemento al catálogo de la biblioteca.
+     * Método para agregar un elemento al catálogo.
+     * @param elemento Elemento a agregar.
      */
-    fun agregarElemento(elemento: ElementoBiblioteca) {
-        gestorElementos.agregarElemento(elemento)
+    fun agregarElemento(elemento: T) {
+        elementos.add(elemento)
     }
 
     /**
-     * Elimina un elemento del catálogo por su identificador.
+     * Método para eliminar un elemento del catálogo por su ID.
+     * @param id ID del elemento a eliminar.
      */
     fun eliminarElementoPorId(id: String) {
-        gestorElementos.eliminarElementoPorId(id)
+        val elemento = elementos.find { it.id == id }
+        elemento?.let {
+            elementos.remove(it)
+        }
     }
 
     /**
-     * Retorna los elementos del catálogo.
+     * Método para buscar elementos en el catálogo que cumplan ciertos criterios.
+     * @param criterio Criterio de búsqueda.
+     * @return Lista de elementos que cumplen el criterio.
      */
-    fun obtenerElementos(): List<ElementoBiblioteca> {
-        return gestorElementos.obtenerElementos()
+    fun buscarElementosPorCriterio(criterio: (T) -> Boolean): List<T> {
+        return elementos.filter(criterio)
     }
 
     /**
-     * Busca elementos en el catálogo por diversos criterios.
-     * @param criterio Función de filtrado que determina si un elemento debe ser incluido en los resultados.
-     * @return Lista de elementos que cumplen con el criterio de búsqueda.
+     * Método para obtener todos los elementos del catálogo.
+     * @return Lista de todos los elementos del catálogo.
      */
-    fun buscarElementosPorCriterio(criterio: (ElementoBiblioteca) -> Boolean): List<ElementoBiblioteca> {
-        return gestorElementos.filtrarPorCriterio(criterio)
+    fun obtenerTodosLosElementos(): List<T> {
+        return elementos.toList()
     }
 }
+
+

@@ -1,38 +1,68 @@
 package org.pebiblioteca
 
+/**
+ * Programa principal para gestionar una biblioteca.
+ */
+
 fun main() {
-    // Creación del catálogo
-    val catalogo = Catalogo()
+    // Crear instancias de elementos de biblioteca
+    val libro = Libro("1", "El señor de los anillos", "J.R.R. Tolkien", 1954, "Fantasía")
+    val revista = Revista("2", "National Geographic", 2021, "Ciencia")
+    val dvd = DVD("3", "Interestelar", 169, "Ciencia ficción")
 
-    // Creación del gestor de préstamos
-    val registroPrestamos = RegistroPrestamos()
+    // Crear el catálogo y agregar elementos
+    val catalogo = Catalogo<ElementoBiblioteca>()
+    catalogo.agregarElemento(libro)
+    catalogo.agregarElemento(revista)
+    catalogo.agregarElemento(dvd)
 
-    // Creación del gestor de biblioteca
-    val gestorBiblioteca = GestorBiblioteca(catalogo, registroPrestamos)
+    // Mostrar los elementos del catálogo
+    println("Catálogo de la biblioteca:")
+    catalogo.obtenerTodosLosElementos().forEach { println("${it.titulo} - ${it.id}") }
 
-    // Creación y agregación de elementos al catálogo
-    val libro1 = Libro("1", "El Señor de los Anillos", "JRR Tolkien", 1954, "Fantasía")
-    val libro2 = Libro("2", "El Resplandor", "Stephen King", 1977, "Terror")
-    val libro3 = Libro("3", "Cosmos", "Carl Sagan", 1980, "Ciencia")
-    catalogo.agregarElemento(libro1)
-    catalogo.agregarElemento(libro2)
-    catalogo.agregarElemento(libro3)
+    // Realizar préstamo y devolución de elementos
+    println("\nOperaciones de préstamo y devolución:")
+    val usuario = Usuario(1, "Juan")
 
-    // Realizar operaciones de préstamo y devolución
-    gestorBiblioteca.prestarElemento(libro1, Usuario(1, "Usuario1"))
-    gestorBiblioteca.prestarElemento(libro2, Usuario(2, "Usuario2"))
-    gestorBiblioteca.devolverElemento(libro1, Usuario(1, "Usuario1"))
+    catalogo.buscarElementosPorCriterio { it.id == "L001" }.firstOrNull()?.let {
+        println("Préstamo de ${it.titulo}")
+        if (it is Prestable) {
+            it.prestar()
+            println("Préstamo realizado: ${it.estado}")
+        }
+    }
 
-    // Mostrar catálogo actualizado
-    println("Catálogo de elementos:")
-    val elementosCatalogo = catalogo.obtenerElementos()
-    elementosCatalogo.forEach { println("${it.titulo}, ${it.autor}, ${it.añoPublicacion}, ${it.tematica}, ${it.estado}") }
+    catalogo.buscarElementosPorCriterio { it.id == "D001" }.firstOrNull()?.let {
+        println("Préstamo de ${it.titulo}")
+        if (it is Prestable) {
+            it.prestar()
+            println("Préstamo realizado: ${it.estado}")
+        }
+    }
 
-    // Mostrar historial de préstamos
-    println("\nHistorial de préstamos:")
-    val historialPrestamos = registroPrestamos.consultarHistorialPrestamos()
-    historialPrestamos.forEach { println("Elemento: ${it.first.titulo}, Usuario: ${it.second.nombre}") }
+    catalogo.buscarElementosPorCriterio { it.id == "LE001" }.firstOrNull()?.let {
+        println("Préstamo de ${it.titulo}")
+        if (it is Prestable) {
+            it.prestar()
+            println("Préstamo realizado: ${it.estado}")
+        }
+    }
+
+    catalogo.buscarElementosPorCriterio { it.id == "R001" }.firstOrNull()?.let {
+        println("Devolución de ${it.titulo}")
+        if (it is Prestable) {
+            it.devolver()
+            println("Devolución realizada: ${it.estado}")
+        }
+    }
+
+    // Búsqueda de elementos en el catálogo
+    println("\nBúsqueda de elementos:")
+    val resultadoBusqueda = catalogo.buscarElementosPorCriterio { it is DVD && it.genero == "Ciencia ficción" }
+    resultadoBusqueda.firstOrNull()?.let { println("Se encontró un DVD de ciencia ficción: ${it.titulo}") }
 }
+
+
 
 
 
